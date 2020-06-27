@@ -55,11 +55,9 @@ async function troll() {
 
 async function coinFlip() {
   const num = Math.floor(Math.random() * Math.floor(2));
-  let text = "";
+  let text = "Tails";
   if (num === 0) {
     text = "Heads";
-  } else {
-    text = "Tails";
   }
   return text;
 }
