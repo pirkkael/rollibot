@@ -1,10 +1,7 @@
-import discord from "discord.io";
-import axios from "axios";
-import cheerio from "cheerio";
-import fs from "fs";
-
-const authData = fs.readFileSync("./auth.json");
-const auth = JSON.parse(authData);
+const discord = require("discord.io");
+const axios = require("axios");
+const cheerio = require("cheerio");
+const auth = require("./auth.json");
 
 const bot = new discord.Client({
   token: auth.token,
@@ -17,10 +14,16 @@ bot.on("ready", function (evt) {
 });
 bot.on("message", async function (user, userID, channelID, message, evt) {
   if (message.substring(0, 1) == "!") {
-    let args = message.substring(1).split(" ");
+    const args = message.substring(1).split(" ");
     const cmd = args[0];
 
     switch (cmd) {
+      case "commands":
+        bot.sendMessage({
+          to: channelID,
+          message: "Available commands: !troll !coinflip",
+        });
+        break;
       case "ping":
         bot.sendMessage({
           to: channelID,
@@ -33,6 +36,12 @@ bot.on("message", async function (user, userID, channelID, message, evt) {
           message: await troll(),
         });
         break;
+      case "coinflip":
+        bot.sendMessage({
+          to: channelID,
+          message: await coinFlip(),
+        });
+        break;
     }
   }
 });
@@ -42,4 +51,15 @@ async function troll() {
   const result = await axios.get(siteUrl);
   const data = cheerio.load(result.data);
   return data("p").first().text();
+}
+
+async function coinFlip() {
+  const num = Math.floor(Math.random() * Math.floor(2));
+  let text = "";
+  if (num === 0) {
+    text = "Heads";
+  } else {
+    text = "Tails";
+  }
+  return text;
 }
