@@ -16,6 +16,7 @@ bot.on("message", async function (user, userID, channelID, message, evt) {
   if (message.substring(0, 1) == "!") {
     const args = message.substring(1).split(" ");
     const cmd = args[0];
+    const add = args[1];
 
     switch (cmd) {
       case "commands":
@@ -45,7 +46,7 @@ bot.on("message", async function (user, userID, channelID, message, evt) {
       case "gif":
         bot.sendMessage({
           to: channelID,
-          message: await getGifUrl(),
+          message: await getGifUrl(add),
         });
         break;
     }
@@ -68,9 +69,12 @@ async function coinFlip() {
   return text;
 }
 
-async function getGifUrl() {
+async function getGifUrl(tag) {
   const siteUrl =
-    "http://api.giphy.com/v1/gifs/random?api_key=" + auth.giphyApiKey;
+    "http://api.giphy.com/v1/gifs/random?api_key=" +
+    auth.giphyApiKey +
+    "&tag=" +
+    tag;
   const result = await axios.get(siteUrl);
   return result.data.data.bitly_url;
 }
