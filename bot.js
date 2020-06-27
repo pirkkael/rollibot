@@ -21,7 +21,7 @@ bot.on("message", async function (user, userID, channelID, message, evt) {
       case "commands":
         bot.sendMessage({
           to: channelID,
-          message: "Available commands: !troll !coinflip",
+          message: "Available commands: !troll !coinflip !gif",
         });
         break;
       case "ping":
