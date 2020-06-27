@@ -42,6 +42,12 @@ bot.on("message", async function (user, userID, channelID, message, evt) {
           message: await coinFlip(),
         });
         break;
+      case "gif":
+        bot.sendMessage({
+          to: channelID,
+          message: await getGifUrl(),
+        });
+        break;
     }
   }
 });
@@ -60,4 +66,11 @@ async function coinFlip() {
     text = "Heads";
   }
   return text;
+}
+
+async function getGifUrl() {
+  const siteUrl =
+    "http://api.giphy.com/v1/gifs/random?api_key=" + auth.giphyApiKey;
+  const result = await axios.get(siteUrl);
+  return result.data.data.bitly_url;
 }
