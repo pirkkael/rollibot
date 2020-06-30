@@ -21,7 +21,7 @@ client.on("message", async function (message) {
         message.channel.send("Pong.");
         break;
       case "commands":
-        message.channel.send("Available commands: !troll !coinflip !gif");
+        message.channel.send("Available commands: !troll !coinflip !gif !meme");
         break;
       case "troll":
         message.channel.send(await troll());
