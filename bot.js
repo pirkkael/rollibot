@@ -1,57 +1,42 @@
-const discord = require("discord.io");
+const Discord = require("discord.js");
 const axios = require("axios");
 const cheerio = require("cheerio");
 const auth = require("./auth.json");
 
-const bot = new discord.Client({
-  token: auth.token,
-  autorun: true,
+const client = new Discord.Client();
+
+client.on("ready", function (evt) {
+  console.log("Connected!");
 });
-bot.on("ready", function (evt) {
-  console.log("Connected");
-  console.log("Logged in as: ");
-  console.log(bot.username + " - (" + bot.id + ")");
-});
-bot.on("message", async function (user, userID, channelID, message, evt) {
-  if (message.substring(0, 1) == "!") {
-    const args = message.substring(1).split(" ");
+
+client.on("message", async function (message) {
+  console.log(message.content);
+  if (message.content.substring(0, 1) == "!") {
+    const args = message.content.substring(1).split(" ");
     const cmd = args[0];
     const add = args[1];
 
     switch (cmd) {
-      case "commands":
-        bot.sendMessage({
-          to: channelID,
-          message: "Available commands: !troll !coinflip !gif",
-        });
-        break;
       case "ping":
-        bot.sendMessage({
-          to: channelID,
-          message: "Pong!",
-        });
+        message.channel.send("Pong.");
+        break;
+      case "commands":
+        message.channel.send("Available commands: !troll !coinflip !gif");
         break;
       case "troll":
-        bot.sendMessage({
-          to: channelID,
-          message: await troll(),
-        });
+        message.channel.send(await troll());
         break;
       case "coinflip":
-        bot.sendMessage({
-          to: channelID,
-          message: await coinFlip(),
-        });
+        message.channel.send(await coinFlip());
         break;
       case "gif":
-        bot.sendMessage({
-          to: channelID,
-          message: await getGifUrl(add),
-        });
+        message.channel.send(await getGifUrl(add));
         break;
     }
   }
 });
+
+client.login(auth.token);
 
 async function troll() {
   const siteUrl = "http://rolloffle.churchburning.org/troll_me.php";
@@ -74,7 +59,9 @@ async function getGifUrl(tag) {
     "http://api.giphy.com/v1/gifs/random?api_key=" +
     auth.giphyApiKey +
     "&tag=" +
-    tag;
+    tag +
+    "&verificationMode=true";
   const result = await axios.get(siteUrl);
+  console.log(result);
   return result.data.data.bitly_url;
 }
