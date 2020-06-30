@@ -10,7 +10,7 @@ client.on("ready", function (evt) {
 });
 
 client.on("message", async function (message) {
-  console.log(message.content);
+  //console.log(message.content);
   if (message.content.substring(0, 1) == "!") {
     const args = message.content.substring(1).split(" ");
     const cmd = args[0];
