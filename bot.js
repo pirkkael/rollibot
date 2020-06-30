@@ -62,6 +62,5 @@ async function getGifUrl(tag) {
     tag +
     "&verificationMode=true";
   const result = await axios.get(siteUrl);
-  console.log(result);
   return result.data.data.bitly_url;
 }
