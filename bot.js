@@ -32,6 +32,9 @@ client.on("message", async function (message) {
       case "gif":
         message.channel.send(await getGifUrl(add));
         break;
+      case "meme":
+        message.channel.send(await getMeme());
+        break;
     }
   }
 });
@@ -63,4 +66,10 @@ async function getGifUrl(tag) {
     "&verificationMode=true";
   const result = await axios.get(siteUrl);
   return result.data.data.bitly_url;
+}
+
+async function getMeme() {
+  const siteUrl = "https://meme-api.herokuapp.com/gimme";
+  const result = await axios.get(siteUrl);
+  return result.data.url;
 }
